@@ -1,37 +1,55 @@
 import React from 'react';
 import '../styles/menu.css';
 
-const Menu = () => {
+const postsData = [
+  {
+    id: 1,
+    title: "Building a React App",
+    author: "Jane Doe",
+    image: "https://via.placeholder.com/300x200",
+    content: "In this post, I explain how I built a React app from scratch.",
+  },
+  {
+    id: 2,
+    title: "GraphQL vs REST",
+    author: "John Smith",
+    image: "https://via.placeholder.com/300x200",
+    content: "I compare GraphQL and REST APIs and show the pros and cons of each.",
+  },
+  {
+    id: 3,
+    title: "Tips for JavaScript Developers",
+    author: "Alice Johnson",
+    image: "https://via.placeholder.com/300x200",
+    content: "Here are my top 10 tips to become a better JavaScript developer.",
+  },
+  {
+    id: 4,
+    title: "Deploying to AWS",
+    author: "Bob Lee",
+    image: "https://via.placeholder.com/300x200",
+    content: "A quick guide on deploying your applications to AWS.",
+  },
+];
+
+const DeveloperFeed = () => {
   return (
     <div>
       <main>
-        <div className="menu">
-          <div className="row">
-            <div className="product-card">
-              <img src="https://via.placeholder.com/150" alt="Product 1" />
-              <p>Product 1</p>
-              <p>R100</p>
-              <button className="add-to-cart">Add to Cart</button>
+        <div className="feed">
+          {postsData.map((post) => (
+            <div key={post.id} className="post-card">
+              <img src={post.image} alt={post.title} />
+              <h3>{post.title}</h3>
+              <p><strong>By:</strong> {post.author}</p>
+              <p>{post.content}</p>
+              <button className="like-button">Like</button>
             </div>
-
-            <div className="product-card">
-              <img src="https://via.placeholder.com/150" alt="Product 2" />
-              <p>Product 2</p>
-              <p>R150</p>
-              <button className="add-to-cart">Add to Cart</button>
-            </div>
-
-            <div className="product-card">
-              <img src="https://via.placeholder.com/150" alt="Product 3" />
-              <p>Product 3</p>
-              <p>R200</p>
-              <button className="add-to-cart">Add to Cart</button>
-            </div>
-          </div>
+          ))}
         </div>
       </main>
     </div>
   );
 };
 
-export default Menu;
+export default DeveloperFeed;
