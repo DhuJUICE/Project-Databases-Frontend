@@ -1,68 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import '../styles/menu.css';
-import { addToCart } from './apiComponents/api-cart';
-import { preloadMenuProductData } from './preLoadMenuData/preloadMenuProducts';
 
 const Menu = () => {
-  const [products, setProducts] = useState([]);
-  const [quantities, setQuantities] = useState({});
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-	const loadData = async () => {
-	  const data = await preloadMenuProductData();
-	  setProducts(data || []);
-	  setLoading(false);
-	};
-  
-	loadData();
-  }, []);
-
-  const handleAddToCart = async (productId, quantity) => {
-    const accessToken = !!localStorage.getItem("accessToken");
-    if (accessToken) {
-      const result = await addToCart(productId, quantity);
-      if (result.success) {
-        alert("Item added to cart!");
-      } else {
-        alert(result.message || "Failed to add item.");
-      }
-    } else {
-      alert("You must be logged in to add to cart");
-    }
-  };
-
   return (
     <div>
       <main>
-        {loading ? (
-          <div className="loading-container">
-            <p>Loading menu...</p>
-          </div>
-        ) : products.length === 0 ? (
-          <div className="loading-container">
-            <p>No products available at the moment.</p>
-          </div>
-        ) : (
-          <div className="menu">
-            <div className="row">
-              {products.map((product) => (
-                <div key={product.id} className="product-card">
-                  <img src={product.prodImagePath} alt={product.prodName} />
-                  <p>{product.prodName}</p>
-                  <p>R{product.prodPrice}</p>
+        <div className="menu">
+          <div className="row">
+            <div className="product-card">
+              <img src="https://via.placeholder.com/150" alt="Product 1" />
+              <p>Product 1</p>
+              <p>R100</p>
+              <button className="add-to-cart">Add to Cart</button>
+            </div>
 
-                  <button
-                    className="add-to-cart"
-                    onClick={() => handleAddToCart(product.id, quantities[product.id] || 1)}
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-              ))}
+            <div className="product-card">
+              <img src="https://via.placeholder.com/150" alt="Product 2" />
+              <p>Product 2</p>
+              <p>R150</p>
+              <button className="add-to-cart">Add to Cart</button>
+            </div>
+
+            <div className="product-card">
+              <img src="https://via.placeholder.com/150" alt="Product 3" />
+              <p>Product 3</p>
+              <p>R200</p>
+              <button className="add-to-cart">Add to Cart</button>
             </div>
           </div>
-        )}
+        </div>
       </main>
     </div>
   );
