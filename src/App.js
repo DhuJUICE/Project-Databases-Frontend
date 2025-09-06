@@ -4,7 +4,11 @@ import ScrollToTop from "./components/scrollToTop";
 
 // Importing your components
 import Home from "./components/home";
-import Menu from "./components/menu";
+
+import FeedPage from "./components/feed-page";
+import PostPage from "./components/post-page";
+import FollowPage from "./components/follow-page";
+
 import Sign_In from "./components/userManagementComponents/sign-in";
 import Sign_Up from "./components/userManagementComponents/sign-up";
 import UploadProduct from "./components/upload-products";
@@ -27,7 +31,11 @@ function App() {
 
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/menu" element={<Menu />} />
+                <Route path="/feed" element={<FeedPage />} />
+                <Route path="/post" element={<PostPage />} />
+                <Route path="/follow" element={<FollowPage />} />
+
+
                 <Route path="/sign-in" element={<Sign_In />} />
                 <Route path="/sign-up" element={<Sign_Up />} />
                 <Route path="/upload-product" element={<UploadProduct />} />
