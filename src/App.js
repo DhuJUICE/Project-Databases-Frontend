@@ -5,9 +5,9 @@ import ScrollToTop from "./components/scrollToTop";
 // Importing your components
 import Home from "./components/home";
 
-import FeedPage from "./components/feed-page";
-import PostPage from "./components/post-page";
-import FollowPage from "./components/follow-page";
+import FeedPage from "./components/pageComponents/feed-page";
+import PostPage from "./components/pageComponents/post-page";
+import FollowPage from "./components/pageComponents/follow-page";
 
 import Sign_In from "./components/userManagementComponents/sign-in";
 import Sign_Up from "./components/userManagementComponents/sign-up";
