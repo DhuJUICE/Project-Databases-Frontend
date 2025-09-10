@@ -3,33 +3,27 @@ import { useNavigate } from 'react-router-dom';
 import '../../styles/sign-in.css';
 import { signIn } from '../apiComponents/api-signIn';
 
-
 const Sign_In = () => {
   const navigate = useNavigate();
-
   const [successMessage, setSuccessMessage] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const validateForm = async (event) => {
     event.preventDefault();
 
-    const userName = document.getElementById('email').value;
+    const userName = document.getElementById('username').value; // changed id
     const userPassword = document.getElementById('password').value;
 
-	const result = await signIn(userName, userPassword);
+    const result = await signIn(userName, userPassword);
 
     if (result.success) {
       alert('Sign-in successful! Welcome back.');
-
-      // ✅ Go to the menu page
-      navigate('/menu');
-	  window.location.reload(); // forces a full reload so Footer & everything else update
+      navigate('/');
+      window.location.reload(); // forces a full reload so Footer & everything else update
     } else {
       alert(result.message); // Show error if failed
     }
   };
 
-  
   const togglePasswordVisibility = () => {
     const passwordInput = document.getElementById('password');
     passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
@@ -43,12 +37,12 @@ const Sign_In = () => {
         </div>
         <fieldset>
           <form id="sign-in-form" onSubmit={validateForm}>
-            <label htmlFor="email">Email:</label>
+            <label htmlFor="username">Username or Email:</label>
             <input
-              type="email"
-              name="email"
-              id="email"
-              placeholder="Enter your email"
+              type="text" // changed from "email" to "text"
+              name="username"
+              id="username" // changed id
+              placeholder="Enter your username or email"
               required
             />
 
