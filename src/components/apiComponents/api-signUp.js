@@ -1,24 +1,27 @@
-// api-signUp.js
-import { API_URL } from "./api-base-url";
+import { API_URL } from "./api-base-url"; // Import the base API URL
 
-export const registerUser = async (firstName, lastName, email, password, confirmPassword) => {
+// Register a new user
+export const registerUser = async ({ firstname, lastname, email, username, password, confirmPassword }) => {
   try {
-    const response = await fetch(`${API_URL}/api/register`, {
+    const response = await fetch(`${API_URL}/user/register`, { // Express proxy endpoint
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json' 
+      },
       body: JSON.stringify({
-        first_name: firstName,
-        last_name: lastName,
+        first_name: firstname,
+        last_name: lastname,
         email: email,
+        username: username,
         password: password,
         confirm_password: confirmPassword,
       }),
     });
 
     const data = await response.json();
-    return data; // You can return the data from the API or handle accordingly
+    return data; // return the API response
   } catch (error) {
     console.error('Error during registration:', error);
-    throw error; // Rethrow the error to handle it in the component
+    throw error; // rethrow to handle in your component
   }
 };

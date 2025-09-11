@@ -16,7 +16,7 @@ const Sign_In = () => {
     const result = await signIn(userName, userPassword);
 
     if (result.success) {
-      alert('Sign-in successful! Welcome back.');
+
       navigate('/');
       window.location.reload(); // forces a full reload so Footer & everything else update
     } else {

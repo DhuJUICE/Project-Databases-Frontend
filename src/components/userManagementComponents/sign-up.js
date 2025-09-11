@@ -35,9 +35,7 @@ const Sign_Up = () => {
 
     try {
       // Call your API to register the user
-      const data = await registerUser({ firstname, lastname, email, username, password });
-      console.log(data);
-      alert("Account created successfully!");
+      const data = await registerUser({ firstname, lastname, email, username, password, confirmPassword });
 
       // Redirect to login
       navigate('/sign-in');
@@ -108,7 +106,7 @@ const Sign_Up = () => {
                 name="password"
                 id="password"
                 placeholder="Enter your password"
-                minLength="6"
+                minLength="3"
                 required
                 className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
@@ -121,7 +119,7 @@ const Sign_Up = () => {
                 name="confirm-password"
                 id="confirm-password"
                 placeholder="Confirm your password"
-                minLength="6"
+                minLength="3"
                 required
                 className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />

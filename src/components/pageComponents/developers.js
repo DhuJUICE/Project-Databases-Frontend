@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { fetchDevelopers } from "../apiComponents/api-developers"; // adjust import path
+import { fetchDevelopers } from "../apiComponents/api-developers"; // adjust path
+import { followUser } from "../apiComponents/api-relationships"; // import the follow function
 
 const DeveloperFollow = () => {
   const [developers, setDevelopers] = useState([]);
@@ -22,12 +23,18 @@ const DeveloperFollow = () => {
     loadDevelopers();
   }, []);
 
-  const toggleFollow = (dev) => {
-    if (followed.some((d) => d.id === dev.id)) {
-      setFollowed(followed.filter((d) => d.id !== dev.id));
-    } else {
+  // This now calls the API to follow the developer
+  const handleFollow = async (dev) => {
+    const result = await followUser(dev.username);
+    if (result.success) {
       setFollowed([...followed, dev]);
+    } else {
+      alert(result.message);
     }
+  };
+
+  const handleUnfollow = (dev) => {
+    setFollowed(followed.filter((d) => d.id !== dev.id));
   };
 
   const notFollowed = developers.filter((d) => !followed.some((f) => f.id === d.id));
@@ -97,7 +104,7 @@ const DeveloperFollow = () => {
                 <p style={{ fontWeight: "600", color: "#000" }}>{dev.firstname} {dev.lastname}</p>
                 <span style={{ color: "#6b7280" }}>@{dev.username}</span>
               </div>
-              <button style={buttonStyle.follow} onClick={() => toggleFollow(dev)}>Follow</button>
+              <button style={buttonStyle.follow} onClick={() => handleFollow(dev)}>Follow</button>
             </div>
           )) : <p style={{ color: "#6b7280", textAlign: "center" }}>You're following everyone!</p>}
         </div>
@@ -111,7 +118,7 @@ const DeveloperFollow = () => {
                 <p style={{ fontWeight: "600", color: "#000" }}>{dev.firstname} {dev.lastname}</p>
                 <span style={{ color: "#6b7280" }}>@{dev.username}</span>
               </div>
-              <button style={buttonStyle.unfollow} onClick={() => toggleFollow(dev)}>Unfollow</button>
+              <button style={buttonStyle.unfollow} onClick={() => handleUnfollow(dev)}>Unfollow</button>
             </div>
           )) : <p style={{ color: "#6b7280", textAlign: "center" }}>You haven't followed anyone yet.</p>}
         </div>

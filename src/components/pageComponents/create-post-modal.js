@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { createPost } from "../apiComponents/api-post"; // import your API function
 
-const CreatePostModal = ({ isOpen, onClose, onCreate, username }) => {
+const CreatePostModal = ({ isOpen, onClose, onCreate }) => {
   const [caption, setCaption] = useState("");
   const [image, setImage] = useState(null);
+  const [tags, setTags] = useState(""); // comma-separated input for tags
+  const [loading, setLoading] = useState(false);
 
   if (!isOpen) return null;
 
@@ -10,13 +13,52 @@ const CreatePostModal = ({ isOpen, onClose, onCreate, username }) => {
     setImage(e.target.files[0]);
   };
 
-  const handleCreate = () => {
-    const postId = Math.random().toString(36).substring(2, 10); // mock id
-    alert(`${username} created post with id ${postId}`);
-    onCreate({ caption, image, id: postId });
-    setCaption("");
-    setImage(null);
-    onClose();
+  const handleCreate = async () => {
+    const username = localStorage.getItem("username");
+    const token = localStorage.getItem("token");
+
+    if (!username || !token) {
+      alert("You must be logged in to create a post.");
+      return;
+    }
+
+    const tagArray = tags
+      .split(",")
+      .map((t) => t.trim())
+      .filter((t) => t.length > 0);
+
+    setLoading(true);
+    try {
+      const response = await createPost({
+        caption,
+        imgUrl: image ? URL.createObjectURL(image) : "default.png",
+        tags: tagArray.length ? tagArray : ["general"],
+      });
+
+      if (response.success) {
+        alert("Post created successfully!");
+        // Pass created post back to parent component
+        onCreate({
+          caption,
+          image,
+          id: Math.random().toString(36).substring(2, 10), // mock id
+          tags: tagArray.length ? tagArray : ["general"],
+        });
+
+        // Reset form
+        setCaption("");
+        setImage(null);
+        setTags("");
+        onClose();
+      } else {
+        alert(response.message || "Failed to create post.");
+      }
+    } catch (error) {
+      console.error("Create post error:", error);
+      alert("Something went wrong. Try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const modalStyle = {
@@ -62,6 +104,7 @@ const CreatePostModal = ({ isOpen, onClose, onCreate, username }) => {
     <div style={modalStyle} onClick={onClose}>
       <div style={contentStyle} onClick={(e) => e.stopPropagation()}>
         <h2>Create Post</h2>
+
         <input
           type="text"
           placeholder="Write a caption..."
@@ -69,13 +112,31 @@ const CreatePostModal = ({ isOpen, onClose, onCreate, username }) => {
           onChange={(e) => setCaption(e.target.value)}
           style={inputStyle}
         />
-        <input type="file" onChange={handleImageChange} style={inputStyle} />
+
+        <input
+          type="file"
+          onChange={handleImageChange}
+          style={inputStyle}
+        />
+
+        <input
+          type="text"
+          placeholder="Add tags (comma separated)"
+          value={tags}
+          onChange={(e) => setTags(e.target.value)}
+          style={inputStyle}
+        />
+
         <div style={{ display: "flex", justifyContent: "flex-end", gap: "1rem" }}>
-          <button style={{ ...buttonStyle, backgroundColor: "#6b7280" }} onClick={onClose}>
+          <button
+            style={{ ...buttonStyle, backgroundColor: "#6b7280" }}
+            onClick={onClose}
+            disabled={loading}
+          >
             Cancel
           </button>
-          <button style={buttonStyle} onClick={handleCreate}>
-            Create Post
+          <button style={buttonStyle} onClick={handleCreate} disabled={loading}>
+            {loading ? "Creating..." : "Create Post"}
           </button>
         </div>
       </div>

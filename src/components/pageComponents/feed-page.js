@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ThumbsUp, MessageCircle } from "lucide-react";
 import { fetchFeed } from "../apiComponents/api-feed";
+import { likePost, commentPost } from "../apiComponents/api-relationships"; // import API functions
 import CreatePostModal from "./create-post-modal"; // import modal
 
 const DeveloperFeed = () => {
@@ -21,6 +22,7 @@ const DeveloperFeed = () => {
           id: post.id,
           image: post.imgUrl,
           content: post.caption,
+          tags: post.tags || [],
         }));
         setPostsData(formattedPosts);
       } else {
@@ -33,14 +35,35 @@ const DeveloperFeed = () => {
     getFeed();
   }, []);
 
-  const handleLike = (postId) => {
-    if (username) alert(`${username} liked post ${postId}`);
-    else alert("You need to be logged in to like posts.");
+  const handleLike = async (postId) => {
+    if (!username) {
+      alert("You need to be logged in to like posts.");
+      return;
+    }
+
+    const result = await likePost(postId);
+    if (result.success) {
+      alert(`You liked post ${postId}`);
+    } else {
+      alert(result.message || "Failed to like post.");
+    }
   };
 
-  const handleComment = (postId) => {
-    if (username) alert(`${username} commented on post ${postId}`);
-    else alert("You need to be logged in to comment on posts.");
+  const handleComment = async (postId) => {
+    if (!username) {
+      alert("You need to be logged in to comment on posts.");
+      return;
+    }
+
+    const comment = prompt("Write your comment:");
+    if (!comment) return;
+
+    const result = await commentPost(postId, comment);
+    if (result.success) {
+      alert("Comment added successfully!");
+    } else {
+      alert(result.message || "Failed to add comment.");
+    }
   };
 
   const handleCreatePost = (newPost) => {
