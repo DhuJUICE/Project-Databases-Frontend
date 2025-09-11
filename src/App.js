@@ -7,7 +7,7 @@ import Home from "./components/home";
 
 import FeedPage from "./components/pageComponents/feed-page";
 import PostPage from "./components/pageComponents/post-page";
-import FollowPage from "./components/pageComponents/follow-page";
+import FollowPage from "./components/pageComponents/developers";
 
 import Sign_In from "./components/userManagementComponents/sign-in";
 import Sign_Up from "./components/userManagementComponents/sign-up";
@@ -33,7 +33,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/feed" element={<FeedPage />} />
                 <Route path="/post" element={<PostPage />} />
-                <Route path="/follow" element={<FollowPage />} />
+                <Route path="/developers" element={<FollowPage />} />
 
 
                 <Route path="/sign-in" element={<Sign_In />} />

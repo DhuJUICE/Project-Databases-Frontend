@@ -52,7 +52,7 @@ const Sign_In = () => {
               name="password"
               id="password"
               placeholder="Enter your password"
-              minLength="6"
+              minLength="3"
               required
             />
 
