@@ -36,6 +36,43 @@ export const followUser = async (followedUsername) => {
   }
 };
 
+// Unfollow a user
+export const unfollowUser = async (unfollowedUsername) => {
+	try {
+	  const username = localStorage.getItem('username');
+	  const token = localStorage.getItem('token');
+  
+	  if (!username || !token) {
+		return { success: false, message: 'User not logged in.' };
+	  }
+  
+	  const response = await fetch(`${API_URL}/unfollow`, {
+		method: 'DELETE',
+		headers: {
+		  'Content-Type': 'application/json',
+		  'Authorization': `Bearer ${token}`
+		},
+		body: JSON.stringify({
+		  username,
+		  target_username: unfollowedUsername, // match backend key
+		})
+	  });
+  
+	  const data = await response.json();
+  
+	  if (data.status === 'success') {
+		return { success: true, message: data.message };
+	  } else {
+		return { success: false, message: data.message || 'Failed to unfollow user.' };
+	  }
+  
+	} catch (error) {
+	  console.error('Error unfollowing user:', error);
+	  return { success: false, message: 'Something went wrong. Please try again.' };
+	}
+  };
+//=============================================================
+
 // Like a post
 export const likePost = async (postId) => {
   try {

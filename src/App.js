@@ -5,7 +5,9 @@ import ScrollToTop from "./components/scrollToTop";
 // Importing your components
 import Home from "./components/home";
 
+import MyPostsPage from "./components/pageComponents/my-posts";
 import FeedPage from "./components/pageComponents/feed-page";
+
 import PostPage from "./components/pageComponents/post-page";
 import FollowPage from "./components/pageComponents/developers";
 
@@ -31,6 +33,9 @@ function App() {
 
               <Routes>
                 <Route path="/" element={<Home />} />
+
+                <Route path="/my-posts" element={<MyPostsPage />} />
+
                 <Route path="/feed" element={<FeedPage />} />
                 <Route path="/post" element={<PostPage />} />
                 <Route path="/developers" element={<FollowPage />} />

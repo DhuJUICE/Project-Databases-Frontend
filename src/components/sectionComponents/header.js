@@ -24,6 +24,12 @@ const Header = ({ cartCount }) => {
 
           {/* Navigation buttons */}
           <div className="flex space-x-4">
+		  <button
+              onClick={() => navigate("/my-posts")}
+              className="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700"
+            >
+              My Posts
+            </button>
             <button
               onClick={() => navigate("/feed")}
               className="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700"
