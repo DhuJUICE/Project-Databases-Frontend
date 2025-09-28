@@ -11,9 +11,9 @@ export const signIn = async (userName, userPassword) => {
 
     const data = await response.json();
 
-    if (data.token) { // check for token returned from gateway
+    if (data.access) { // check for token returned from gateway
       // Save token in localStorage
-      localStorage.setItem('token', data.token);
+      localStorage.setItem('token', data.access);
       localStorage.setItem('username', data.username); // optional: store username
 
       return { success: true };
