@@ -23,7 +23,7 @@ const Sign_In = () => {
 
     if (result.success) {
       setSuccessMessage('Logged in successfully!');
-      navigate('/');
+      navigate('/feed');
       window.location.reload(); // update Footer and everything else
     } else {
       setErrorMessage(result.message || 'Login failed.');

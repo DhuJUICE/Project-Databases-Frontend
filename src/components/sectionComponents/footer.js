@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4 text-sm">
         {/* Left side */}
         <div>
-          &copy; {new Date().getFullYear()} Social Coder. All Rights Reserved.
+          &copy; {new Date().getFullYear()} DevSocial. All Rights Reserved.
         </div>
 
         {/* Right side */}
