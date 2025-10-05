@@ -8,33 +8,35 @@ import FollowPage from "./components/pageComponents/DevelopersPage/developers";
 import Sign_In from "./components/pageComponents/LoginPage/sign-in";
 import Sign_Up from "./components/pageComponents/RegisterPage/sign-up";
 
-
-import Header from './components/sectionComponents/header'; // Import Header component
-import Footer from './components/sectionComponents/footer'; // Import Footer component
-
+import Header from './components/sectionComponents/header';
+import Footer from './components/sectionComponents/footer';
 
 function App() {
   return (
+    <Router>
+      <div className="flex flex-col min-h-screen bg-gray-50">
+        {/* Header stays at top */}
+        <Header />
 
-      <Router>
-        
-        <div className="App">
-          <main>
-		  <Header />
-              <Routes>
-                <Route path="/" element={<FeedPage />} />
-                <Route path="/my-posts" element={<MyPostsPage />} />
-                <Route path="/feed" element={<FeedPage />} />
-                <Route path="/developers" element={<FollowPage />} />
-                <Route path="/sign-in" element={<Sign_In />} />
-                <Route path="/sign-up" element={<Sign_Up />} />
-              </Routes>
-			<Footer />
-			<ScrollToTop /> {/* Ensures scrolling to top on route change */}
-          </main>
-        </div>
-      </Router>
+        {/* Main content grows */}
+        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <Routes>
+            <Route path="/" element={<FeedPage />} />
+            <Route path="/my-posts" element={<MyPostsPage />} />
+            <Route path="/feed" element={<FeedPage />} />
+            <Route path="/developers" element={<FollowPage />} />
+            <Route path="/sign-in" element={<Sign_In />} />
+            <Route path="/sign-up" element={<Sign_Up />} />
+          </Routes>
+        </main>
 
+        {/* Footer sticks to bottom */}
+        <Footer />
+
+        {/* Scroll to Top button */}
+        <ScrollToTop />
+      </div>
+    </Router>
   );
 }
 
