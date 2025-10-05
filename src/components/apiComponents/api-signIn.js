@@ -15,7 +15,6 @@ export const signIn = async (userName, userPassword) => {
       // Save token in localStorage
       localStorage.setItem('token', data.access);
       localStorage.setItem('username', data.username); // optional: store username
-
       return { success: true };
     } else {
       return { success: false, message: data.detail || 'Login failed. Please check your credentials.' };

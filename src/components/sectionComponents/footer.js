@@ -1,16 +1,21 @@
+// Footer.js
 import React from 'react';
-import '../../App.css';
 
 const Footer = () => {
   return (
-    <div>
+    <footer className="bg-gray-900 text-white shadow-inner mt-8">
+      <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4 text-sm">
+        {/* Left side */}
+        <div>
+          &copy; {new Date().getFullYear()} Social Coder. All Rights Reserved.
+        </div>
 
-      <div className="copyrights">
-        <p>
-          &copy; {new Date().getFullYear()} Tummy Yummy's. All Rights Reserved. | Developed by JugamSoft Technologies
-        </p>
+        {/* Right side */}
+        <div className="text-gray-400">
+          Developed by <span className="font-semibold text-white">HERANSOFT</span>
+        </div>
       </div>
-    </div>
+    </footer>
   );
 };
 

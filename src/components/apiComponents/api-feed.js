@@ -4,7 +4,7 @@ import { API_URL } from "./api-base-url"; // Import the API base URL
 export const fetchFeed = async () => {
   try {
     const username = localStorage.getItem('username'); // get username from localStorage
-    const token = localStorage.getItem('token');       // get JWT token
+	const token = localStorage.getItem('token');       // get JWT token
 
     if (!username || !token) {
       return { success: false, message: 'User not logged in.' };
@@ -18,6 +18,8 @@ export const fetchFeed = async () => {
       },
       body: JSON.stringify({ username })
     });
+
+
 
     const data = await response.json();
 
