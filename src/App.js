@@ -4,7 +4,9 @@ import ScrollToTop from "./components/scrollComponents/scrollToTop";
 
 import MyPostsPage from "./components/pageComponents/MyPostsPage/my-posts";
 import FeedPage from "./components/pageComponents/FeedPage/feed-page";
-import FollowPage from "./components/pageComponents/DevelopersPage/developers";
+
+import FollowingPage from "./components/pageComponents/FollowingPage/following";
+
 import Sign_In from "./components/pageComponents/LoginPage/sign-in";
 import Sign_Up from "./components/pageComponents/RegisterPage/sign-up";
 
@@ -24,7 +26,9 @@ function App() {
             <Route path="/" element={<Sign_In />} />
             <Route path="/my-posts" element={<MyPostsPage />} />
             <Route path="/feed" element={<FeedPage />} />
-            <Route path="/developers" element={<FollowPage />} />
+
+            <Route path="/following" element={<FollowingPage />} />
+
             <Route path="/sign-in" element={<Sign_In />} />
             <Route path="/sign-up" element={<Sign_Up />} />
           </Routes>

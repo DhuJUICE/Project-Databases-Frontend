@@ -1,9 +1,9 @@
-// DeveloperFollow.js
+// FollowingPage.js
 import React, { useState, useEffect } from "react";
 import { fetchDevelopers } from "../../apiComponents/api-developers";
 import { followUser, unfollowUser } from "../../apiComponents/api-relationships";
 
-const DeveloperFollow = () => {
+const FollowingPage = () => {
   const [notFollowed, setNotFollowed] = useState([]);
   const [followed, setFollowed] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -126,4 +126,4 @@ const DeveloperFollow = () => {
   );
 };
 
-export default DeveloperFollow;
+export default FollowingPage;

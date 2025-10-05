@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { getMyPosts } from "../../apiComponents/api-post";
 import sampleImages from "../../jsonData/sample-images.json"; // Import JSON file
+import sampleProfileImages from "../../jsonData/sample-profile-pics.json";
 
 const MyPosts = () => {
   const [posts, setPosts] = useState([]);
@@ -13,6 +14,11 @@ const MyPosts = () => {
     const randomIndex = Math.floor(Math.random() * sampleImages.length);
     return sampleImages[randomIndex].url;
   };
+
+	// Helper to pick a random image
+	const getRandomProfileImage = () => {
+		return sampleProfileImages[0].url;
+		};
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -65,12 +71,15 @@ const MyPosts = () => {
           >
             {/* Post header */}
             <div className="flex items-center mb-3">
-              <div className="w-10 h-10 bg-gray-300 rounded-full mr-3 flex-shrink-0"></div>
+              <div className="w-10 h-10 bg-gray-300 rounded-full mr-3 flex-shrink-0">
+				<img
+					src={getRandomProfileImage()}
+
+					className="w-10 h-10 rounded-full object-cover"
+				/>
+				</div>
               <div>
                 <p className="text-gray-800 font-semibold">You</p>
-                <p className="text-gray-400 text-sm">
-                  {new Date(post.createdAt).toLocaleDateString()}
-                </p>
               </div>
             </div>
 
@@ -85,12 +94,6 @@ const MyPosts = () => {
                 className="w-full rounded-xl object-cover max-h-96"
               />
             )}
-
-            {/* Post footer (like, comment placeholder) */}
-            <div className="mt-4 flex justify-between text-gray-500 text-sm">
-              <button className="hover:text-blue-600 transition">Like</button>
-              <button className="hover:text-blue-600 transition">Comment</button>
-            </div>
           </div>
         ))}
       </main>
