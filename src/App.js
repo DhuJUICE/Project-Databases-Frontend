@@ -5,7 +5,9 @@ import ScrollToTop from "./components/scrollComponents/scrollToTop";
 import MyPostsPage from "./components/pageComponents/MyPostsPage/my-posts";
 import FeedPage from "./components/pageComponents/FeedPage/feed-page";
 
+
 import FollowingPage from "./components/pageComponents/FollowingPage/following";
+
 
 import Sign_In from "./components/pageComponents/LoginPage/sign-in";
 import Sign_Up from "./components/pageComponents/RegisterPage/sign-up";
@@ -13,9 +15,17 @@ import Sign_Up from "./components/pageComponents/RegisterPage/sign-up";
 import Header from './components/sectionComponents/header';
 import Footer from './components/sectionComponents/footer';
 
+//COntext Files
+import { MyPostsProvider } from "./components/pageComponents/MyPostsPage/MyPostsContext";
+import {FeedProvider} from "./components/pageComponents/FeedPage/FeedContext";
+import {FollowingProvider} from "./components/pageComponents/FollowingPage/FollowingContext";
+
 function App() {
   return (
     <Router>
+		<MyPostsProvider>
+			<FeedProvider>
+				<FollowingProvider >
       <div className="flex flex-col min-h-screen bg-gray-50">
         {/* Header stays at top */}
         <Header />
@@ -40,6 +50,9 @@ function App() {
         {/* Scroll to Top button */}
         <ScrollToTop />
       </div>
+	  	</FollowingProvider>
+		</FeedProvider>
+	  </MyPostsProvider>
     </Router>
   );
 }

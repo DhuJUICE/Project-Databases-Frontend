@@ -1,37 +1,43 @@
-// FollowingPage.js
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { fetchDevelopers } from "../../apiComponents/api-developers";
 import { followUser, unfollowUser } from "../../apiComponents/api-relationships";
+import { useFollowing } from "./FollowingContext";
 
 const FollowingPage = () => {
-  const [notFollowed, setNotFollowed] = useState([]);
-  const [followed, setFollowed] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const {
+    followed,
+    notFollowed,
+    setAllDevelopers,
+    followDev,
+    unfollowDev,
+    loading,
+    error,
+    setError,
+    setLoading,
+  } = useFollowing();
 
   useEffect(() => {
-    const loadDevelopers = async () => {
-      setLoading(true);
-      const result = await fetchDevelopers();
+    if (followed.length === 0 && notFollowed.length === 0) {
+      const loadDevelopers = async () => {
+        setLoading(true);
+        const result = await fetchDevelopers();
 
-      if (result.success) {
-        setFollowed(result.followed || []);
-        setNotFollowed(result.not_followed || []);
-      } else {
-        setError(result.message);
-      }
+        if (result.success) {
+          setAllDevelopers(result.followed || [], result.not_followed || []);
+        } else {
+          setError(result.message);
+        }
+        setLoading(false);
+      };
 
-      setLoading(false);
-    };
-
-    loadDevelopers();
+      loadDevelopers();
+    }
   }, []);
 
   const handleFollow = async (dev) => {
     const result = await followUser(dev.username);
     if (result.success) {
-      setFollowed([...followed, dev]);
-      setNotFollowed(notFollowed.filter((d) => d.id !== dev.id));
+      followDev(dev);
     } else {
       alert(result.message);
     }
@@ -40,8 +46,7 @@ const FollowingPage = () => {
   const handleUnfollow = async (dev) => {
     const result = await unfollowUser(dev.username);
     if (result.success) {
-      setFollowed(followed.filter((d) => d.id !== dev.id));
-      setNotFollowed([...notFollowed, dev]);
+      unfollowDev(dev);
     } else {
       alert(result.message);
     }
@@ -66,19 +71,13 @@ const FollowingPage = () => {
       </h2>
 
       <div className="flex flex-col md:flex-row gap-6 max-w-6xl mx-auto">
-        {/* Available to Follow */}
         <div className="flex-1 bg-white rounded-2xl shadow-md p-5 max-h-[70vh] overflow-y-auto">
           <h3 className="text-xl font-semibold mb-4">Available to Follow</h3>
           {notFollowed.length > 0 ? (
             notFollowed.map((dev) => (
-              <div
-                key={dev.id}
-                className="flex justify-between items-center bg-gray-50 p-3 rounded-xl mb-3 hover:bg-gray-100 transition"
-              >
+              <div key={dev.id} className="flex justify-between items-center bg-gray-50 p-3 rounded-xl mb-3 hover:bg-gray-100 transition">
                 <div>
-                  <p className="font-semibold text-gray-800">
-                    {dev.first_name} {dev.last_name}
-                  </p>
+                  <p className="font-semibold text-gray-800">{dev.first_name} {dev.last_name}</p>
                   <span className="text-gray-500">@{dev.username}</span>
                 </div>
                 <button
@@ -94,19 +93,13 @@ const FollowingPage = () => {
           )}
         </div>
 
-        {/* Followed */}
         <div className="flex-1 bg-white rounded-2xl shadow-md p-5 max-h-[70vh] overflow-y-auto">
           <h3 className="text-xl font-semibold mb-4">Followed Developers</h3>
           {followed.length > 0 ? (
             followed.map((dev) => (
-              <div
-                key={dev.id}
-                className="flex justify-between items-center bg-gray-50 p-3 rounded-xl mb-3 hover:bg-gray-100 transition"
-              >
+              <div key={dev.id} className="flex justify-between items-center bg-gray-50 p-3 rounded-xl mb-3 hover:bg-gray-100 transition">
                 <div>
-                  <p className="font-semibold text-gray-800">
-                    {dev.first_name} {dev.last_name}
-                  </p>
+                  <p className="font-semibold text-gray-800">{dev.first_name} {dev.last_name}</p>
                   <span className="text-gray-500">@{dev.username}</span>
                 </div>
                 <button

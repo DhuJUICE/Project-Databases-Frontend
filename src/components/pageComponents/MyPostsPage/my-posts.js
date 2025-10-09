@@ -1,45 +1,63 @@
-// MyPosts.js
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { getMyPosts } from "../../apiComponents/api-post";
-import sampleImages from "../../jsonData/sample-images.json"; // Import JSON file
+import sampleImages from "../../jsonData/sample-images.json"; 
 import sampleProfileImages from "../../jsonData/sample-profile-pics.json";
+import CreatePostModal from "./create-post-modal";
+import { useMyPosts } from "./MyPostsContext";
 
 const MyPosts = () => {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const username = localStorage.getItem("username");
+  const { posts, addPost, setAllPosts, loading, setLoading, error, setError } = useMyPosts();
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
 
-  // Helper to pick a random image
   const getRandomImage = () => {
     const randomIndex = Math.floor(Math.random() * sampleImages.length);
     return sampleImages[randomIndex].url;
   };
 
-	// Helper to pick a random image
-	const getRandomProfileImage = () => {
-		return sampleProfileImages[0].url;
-		};
+  const getRandomProfileImage = () => {
+    return sampleProfileImages[0].url;
+  };
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      setLoading(true);
-      const result = await getMyPosts();
+    // Only fetch if posts are empty
+    if (posts.length === 0) {
+      const fetchPosts = async () => {
+        setLoading(true);
+        const result = await getMyPosts();
 
-      if (result.success) {
-        // Assign random placeholder image if post doesn't have imgUrl
-        const formattedPosts = result.posts.map((post) => ({
-          ...post,
-          imgUrl: getRandomImage(),
-        }));
-        setPosts(formattedPosts);
-      } else {
-        setError(result.message || "Failed to load posts.");
-      }
-      setLoading(false);
+        if (result.success) {
+          const formattedPosts = result.posts.map((post) => ({
+            ...post,
+            imgUrl: getRandomImage(),
+          }));
+          setAllPosts(formattedPosts);
+        } else {
+          setError(result.message || "Failed to load posts.");
+        }
+        setLoading(false);
+      };
+
+      fetchPosts();
+    }
+  }, []);
+
+  const handleCreatePost = (newPost) => {
+    if (!newPost.image) newPost.image = getRandomImage();
+
+    const formattedPost = {
+      id: newPost.id || Math.random().toString(36).substring(2, 10),
+      caption: newPost.caption || newPost.content || "",
+      imgUrl: typeof newPost.image === "string" ? newPost.image : URL.createObjectURL(newPost.image),
+      author: {
+        username: username || "You",
+        profileImage: getRandomProfileImage(),
+      },
+      createdAt: new Date().toISOString(),
     };
 
-    fetchPosts();
-  }, []);
+    addPost(formattedPost);
+  };
 
   if (loading)
     return (
@@ -58,6 +76,20 @@ const MyPosts = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center py-8">
       <main className="w-full max-w-3xl px-4 space-y-6">
+        <div
+          className="bg-white rounded-2xl shadow-md p-4 text-gray-500 cursor-pointer hover:shadow-lg transition"
+          onClick={() => setIsModalOpen(true)}
+        >
+          What code are you working on, {username}?
+        </div>
+
+        <CreatePostModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onCreate={handleCreatePost}
+          username={username}
+        />
+
         {posts.length === 0 && (
           <p className="text-gray-600 text-center text-lg">
             You haven’t posted anything yet.
@@ -69,21 +101,15 @@ const MyPosts = () => {
             key={post.id || post.imgUrl + post.caption}
             className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition-shadow duration-300"
           >
-            {/* Post header */}
             <div className="flex items-center mb-3">
-              <div className="w-10 h-10 bg-gray-300 rounded-full mr-3 flex-shrink-0">
-				<img
-					src={getRandomProfileImage()}
-
-					className="w-10 h-10 rounded-full object-cover"
-				/>
-				</div>
-              <div>
-                <p className="text-gray-800 font-semibold">You</p>
-              </div>
+              <img
+                src={getRandomProfileImage()}
+                alt={post.author?.username || "You"}
+                className="w-10 h-10 rounded-full object-cover mr-3"
+              />
+              <p className="text-gray-800 font-semibold">{post.author?.username || "You"}</p>
             </div>
 
-            {/* Post content */}
             {post.caption && (
               <p className="mb-3 text-gray-800 text-md">{post.caption}</p>
             )}
