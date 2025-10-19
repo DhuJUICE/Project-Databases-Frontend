@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+  auth:
+    build: ./Project-Databases-AuthenticationService
+    #command: sh -c "python manage.py migrate && gunicorn ecom_project.wsgi:application --bind 0.0.0.0:8000"
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./Project-Databases-AuthenticationService:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./Project-Databases-AuthenticationService/.env
+
+  feed:
+    build: ./Project-Databases-FeedService
+    #command: sh -c "python manage.py migrate && gunicorn ecom_project.wsgi:application --bind 0.0.0.0:8000"
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8001"
+    volumes:
+      - ./Project-Databases-FeedService:/app
+    ports:
+      - "8001:8001"
+    env_file:
+      - ./Project-Databases-FeedService/.env
+
+  user:
+    build: ./Project-Databases-UserService
+    #command: sh -c "python manage.py migrate && gunicorn ecom_project.wsgi:application --bind 0.0.0.0:8000"
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8002"
+    volumes:
+      - ./Project-Databases-UserService:/app
+    ports:
+      - "8002:8002"
+    env_file:
+      - ./Project-Databases-UserService/.env
+
+  post:
+    build: ./Project-Databases-PostService
+    #command: sh -c "python manage.py migrate && gunicorn ecom_project.wsgi:application --bind 0.0.0.0:8000"
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8003"
+    volumes:
+      - ./Project-Databases-PostService:/app
+    ports:
+      - "8003:8003"
+    env_file:
+      - ./Project-Databases-PostService/.env
+
+  graph:
+    build: ./Project-Databases-GraphService
+    #command: sh -c "python manage.py migrate && gunicorn ecom_project.wsgi:application --bind 0.0.0.0:8000"
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8004"
+    volumes:
+      - ./Project-Databases-GraphService:/app
+    ports:
+      - "8004:8004"
+    env_file:
+      - ./Project-Databases-GraphService/.env
