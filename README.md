@@ -45,3 +45,16 @@ git clone <frontend-repo-url>
 cd frontend
 npm install
 npm start
+
+The application runs on http://localhost:3000.
+
+Notes
+
+This frontend depends on the DevSocial API Gateway.
+Backend services must be running for full functionality.
+
+What This Repo Demonstrates
+
+Frontend application structure
+Client-side authentication handling
+Integration with a microservices backend via an API Gateway
